@@ -5,6 +5,9 @@ function init()
 	var board_elem = $('<div/>', {
 		id : 'board',
 	});
+	$(board_elem).bind('contextmenu', function(e) {
+		e.preventDefault();
+	});
 	$('div#content').prepend(board_elem);
 	newGame();
 }
@@ -43,11 +46,17 @@ function Piece(row, col)
 	piece.row = row;
 	piece.col = col;
 	piece.hasMine = false;
+	piece.hasFlag = false;
 	piece.count = 0;
 	piece.visible = false;
 	$(piece).click({row: row, col: col}, function(e) {
 		var p = board[e.data.row][e.data.col];
 		pieceWasClicked(p);
+	});
+	$(piece).bind('contextmenu', {row: row, col: col}, function(e) {
+		e.preventDefault();
+		var p = board[e.data.row][e.data.col];
+		flagPiece(p);
 	});
 	return piece;
 }
@@ -155,13 +164,24 @@ function revealMines()
 	}
 }
 
+function flagPiece(piece)
+{
+	if (!board.playable)
+	{
+		return;
+	}
+	piece.hasFlag = !piece.hasFlag;
+	$(piece).children('span').text(piece.hasFlag ? '#' : '');
+}
+
 function pieceWasClicked(piece)
 {
 	if (!board.playable)
 	{
 		return;
 	}
-	if (piece.visible)
+	if (piece.visible ||
+		piece.hasFlag)
 	{
 		return;
 	}
@@ -202,7 +222,8 @@ function clear(piece)
 			
 			var p = board[i][j];
 			
-			if (p.visible)
+			if (p.visible ||
+				p.hasFlag)
 			{
 				continue;
 			}
@@ -221,7 +242,7 @@ function clear(piece)
 
 function newGame()
 {
-	board = new Board(10);
+	board = new Board(20);
 	generateMines((board.size * board.size) / 10);
 
 	// for (var i = 0; i < board.length; i++)

@@ -8,6 +8,10 @@ body div#board {
 	border: 1px solid #999;
 }
 
+body div#board:hover {
+	cursor: pointer;
+}
+
 body div#board div.piece {
 	float: left;
 	width: 24px;
@@ -37,8 +41,7 @@ body div#board div.piece div.boom {
 	top: -25px;
 }
 
-body div#content div#newGameButton {
-	width: 150px;
+body div#content div.button {
 	height: 35px;
 	padding-top: 10px;
 	color: #fff;
@@ -52,15 +55,23 @@ body div#content div#newGameButton {
 	background-color: #bbb;
 }
 
-body div#content div#newGameButton:hover {
+body div#content div.button:hover {
 	cursor: pointer;
 	background-color: #ccc;
 }
 
-body div#content div#newGameButton:active {
+body div#content div.button:active {
 	background-color: #aaa;
 }
 
-body div#content div#newGameButton p {
+body div#content div.button#helpButton {
+	width: 45px;
+}
+
+body div#content div.button#newGameButton {
+	width: 150px;
+}
+
+body div#content div.button p {
 	text-align: center;
 }
